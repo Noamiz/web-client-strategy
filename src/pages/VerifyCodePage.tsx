@@ -1,7 +1,7 @@
 import type { AuthVerifyCodeSuccess } from 'common-strategy'
 import { AuthCodeForm } from '../components/AuthCodeForm'
 
-type VerifyCodePageProps = {
+interface VerifyCodePageProps {
   onSuccess: (session: AuthVerifyCodeSuccess) => void
   onBack: () => void
 }

@@ -10,7 +10,7 @@ import App from '../App'
 const createFetchResponse = <T,>(body: Result<T>) =>
   ({
     ok: body.ok,
-    json: async () => body,
+    json: () => Promise.resolve(body),
   }) as Response
 
 const queueFetchResponses = (...payloads: Result<unknown>[]) => {

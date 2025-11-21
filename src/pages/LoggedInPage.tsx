@@ -1,6 +1,6 @@
 import type { AuthToken, User } from 'common-strategy'
 
-type LoggedInPageProps = {
+interface LoggedInPageProps {
   user: User
   token: AuthToken
   onSignOut: () => void

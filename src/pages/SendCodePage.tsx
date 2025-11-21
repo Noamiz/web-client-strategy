@@ -1,6 +1,6 @@
 import { AuthEmailForm } from '../components/AuthEmailForm'
 
-type SendCodePageProps = {
+interface SendCodePageProps {
   onContinue: () => void
 }
 

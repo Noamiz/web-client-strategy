@@ -37,7 +37,7 @@ async function postAuth<T>(path: string, payload: unknown): Promise<AuthResult<T
       body: JSON.stringify(payload),
     })
 
-    const data = await response.json().catch(() => null)
+    const data: unknown = await response.json().catch(() => null)
     if (isResult<T>(data)) {
       return data
     }

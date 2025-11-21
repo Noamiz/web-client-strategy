@@ -2,7 +2,7 @@ import type { FormEvent } from 'react'
 import { useState } from 'react'
 import { sendCode } from '../api/authClient'
 
-type AuthEmailFormProps = {
+interface AuthEmailFormProps {
   onSuccess: () => void
 }
 
@@ -35,7 +35,13 @@ export function AuthEmailForm({ onSuccess }: AuthEmailFormProps) {
   }
 
   return (
-    <form className="auth-form" onSubmit={handleSubmit} noValidate>
+    <form
+      className="auth-form"
+      onSubmit={(event) => {
+        void handleSubmit(event)
+      }}
+      noValidate
+    >
       <div className="form-field">
         <label htmlFor="auth-email">Work email</label>
         <input

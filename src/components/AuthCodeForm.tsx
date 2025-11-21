@@ -3,7 +3,7 @@ import { useState } from 'react'
 import type { ApiError, AuthVerifyCodeSuccess } from 'common-strategy'
 import { verifyCode } from '../api/authClient'
 
-type AuthCodeFormProps = {
+interface AuthCodeFormProps {
   onSuccess: (session: AuthVerifyCodeSuccess) => void
 }
 
@@ -57,7 +57,13 @@ export function AuthCodeForm({ onSuccess }: AuthCodeFormProps) {
   }
 
   return (
-    <form className="auth-form" onSubmit={handleSubmit} noValidate>
+    <form
+      className="auth-form"
+      onSubmit={(event) => {
+        void handleSubmit(event)
+      }}
+      noValidate
+    >
       <div className="form-field">
         <label htmlFor="verify-email">Email</label>
         <input
