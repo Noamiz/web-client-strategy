@@ -37,17 +37,18 @@ The **web dashboard** application for the system.
 - Implement the web UI for:
   - Authentication (email + 6-digit code).
   - Later: dashboards, metrics, admin views, etc.
+- Maintain the shared E2E Experience System (E2E-XS v1) shell: design tokens, sticky TopBar, Sidebar navigation, command palette (Ctrl/⌘+K), and AI assistant panel stub so new screens fit the same frame as `internal-tool-strategy`.
 - Consume HTTP APIs from `server-strategy`.
 - Later: consume real-time data from `gateway-strategy`.
 - Use DTOs and error models from `common-strategy`.
 
 **Initial Auth Flow (MVP)**:
 
-- Screen: “Enter your email” → calls `POST /auth/send-code`.
-- Screen: “Enter your email + 6-digit code” → calls `POST /auth/verify-code`.
+- Screen: “Enter your email” → calls `POST /auth/send-code` (route: `/auth/send-code` inside the AppShell).
+- Screen: “Enter your email + 6-digit code” → calls `POST /auth/verify-code` (route: `/auth/verify-code`).
 - On success:
   - Stores the returned `AuthToken` and `User` client-side (for now in memory or localStorage, TBD).
-  - Navigates to a simple “You are logged in” page.
+  - Navigates to a simple “You are logged in” page (`/auth/logged-in`) that sits within the shell.
 - On error:
   - Shows human-readable messages based on `ApiError` (`VALIDATION_ERROR`, `UNAUTHORIZED`, etc.).
 
@@ -118,6 +119,7 @@ If this file and Confluence ever disagree, Confluence is the source of truth and
   - main content area (cards, lists, tables).
 - Reuse shared primitives:
   - cards, buttons, inputs, modals, toasts, skeletons, tabs.
+- Tokens + globals live in `src/theme/tokens.ts` and `src/styles/globals.css`. Layout primitives (TopBar, Sidebar, Inspector, AppShell) live under `src/components/layout/`. New features should wire into these shared building blocks rather than inventing new frames.
 - Do not hard-code colors/spacing/typography; use the shared design tokens and CSS variables.
 - Leave hooks/placeholders for:
   - command palette actions (navigation, quick actions)

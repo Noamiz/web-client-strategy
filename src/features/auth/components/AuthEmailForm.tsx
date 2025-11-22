@@ -23,20 +23,23 @@ export function AuthEmailForm({ onSuccess }: AuthEmailFormProps) {
     setLoading(true)
     setErrorMessage(null)
 
-    const result = await sendCode({ email: normalizedEmail })
-    setLoading(false)
+    try {
+      const result = await sendCode({ email: normalizedEmail })
 
-    if (result.ok) {
-      onSuccess()
-      return
+      if (result.ok) {
+        onSuccess()
+        return
+      }
+
+      setErrorMessage(result.error.message)
+    } finally {
+      setLoading(false)
     }
-
-    setErrorMessage(result.error.message)
   }
 
   return (
     <form
-      className="auth-form"
+      className="form"
       onSubmit={(event) => {
         void handleSubmit(event)
       }}
@@ -55,6 +58,7 @@ export function AuthEmailForm({ onSuccess }: AuthEmailFormProps) {
           onChange={(event) => setEmail(event.target.value)}
           disabled={loading}
           required
+          className="input"
         />
       </div>
 
@@ -64,7 +68,7 @@ export function AuthEmailForm({ onSuccess }: AuthEmailFormProps) {
         </p>
       ) : null}
 
-      <button type="submit" disabled={loading}>
+      <button type="submit" className="btn btn-primary" disabled={loading}>
         {loading ? 'Sending...' : 'Send code'}
       </button>
     </form>

@@ -5,7 +5,7 @@ import type {
   AuthVerifyCodeSuccess,
   Result,
 } from 'common-strategy'
-import App from '../App'
+import AppRoutes from '../App'
 
 const createFetchResponse = <T,>(body: Result<T>) =>
   ({
@@ -58,13 +58,14 @@ describe('auth flow', () => {
 
     queueFetchResponses(sendCodeSuccess, verifySuccess)
 
+    window.history.pushState({}, '', '/auth/send-code')
     const user = userEvent.setup()
-    render(<App />)
+    render(<AppRoutes />)
 
     await user.type(screen.getByLabelText(/work email/i), 'dev@example.com')
     await user.click(screen.getByRole('button', { name: /send code/i }))
 
-    await screen.findByRole('heading', { name: /enter your code/i })
+    await screen.findByRole('heading', { name: /verify the code/i })
 
     await user.type(screen.getByLabelText(/email/i), 'dev@example.com')
     await user.type(screen.getByLabelText(/verification code/i), '123456')
@@ -95,12 +96,13 @@ describe('auth flow', () => {
 
     const fetchMock = queueFetchResponses(sendCodeSuccess, verifyError)
 
+    window.history.pushState({}, '', '/auth/send-code')
     const user = userEvent.setup()
-    render(<App />)
+    render(<AppRoutes />)
 
     await user.type(screen.getByLabelText(/work email/i), 'dev@example.com')
     await user.click(screen.getByRole('button', { name: /send code/i }))
-    await screen.findByRole('heading', { name: /enter your code/i })
+    await screen.findByRole('heading', { name: /verify the code/i })
 
     await user.type(screen.getByLabelText(/email/i), 'dev@example.com')
     await user.type(screen.getByLabelText(/verification code/i), '123456')

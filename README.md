@@ -27,9 +27,10 @@ This application is the main web dashboard for users and admins. It communicates
 
 - Framework: React + TypeScript
 - Bundler/dev server: Vite
-- Styling: (TBD – can start with CSS Modules or simple CSS)
+- Styling: E2E-XS v1 design tokens + global CSS variables (`src/theme/tokens.ts`, `src/styles/globals.css`)
 - Tests: Vitest + React Testing Library
 - Shared types: `common-strategy`
+- Routing/Layout: React Router AppShell with sticky TopBar, Sidebar, and nested routes
 
 In development, the Vite dev server proxies `/auth` calls to the `server-strategy` dev server at `http://localhost:4000`.
 
@@ -37,17 +38,36 @@ In development, the Vite dev server proxies `/auth` calls to the `server-strateg
 
 ## Current Features
 
+### E2E-XS v1 AppShell
+
+- Sticky TopBar with title slot, global search placeholder, command palette trigger (Ctrl/⌘+K helper), notification + AI buttons, and avatar stub.
+- Sidebar navigation (collapsible) for Dashboard, Activity, Auth demo, and Profile plus an Inspector panel stub on wide screens.
+- Pages render within the shell via React Router nested routes (`src/components/layout/AppShell.tsx`).
+- Layout + primitives consume shared design tokens exposed as CSS variables, making it easy to extend themes later.
+
+### Command Palette (Ctrl/⌘+K)
+
+- Accessible overlay (see `src/components/command-palette/CommandPalette.tsx`) that opens via the TopBar button or the global Ctrl/⌘+K shortcut.
+- Provides navigation commands (Dashboard, Activity, Auth, Profile) and UI actions (toggle sidebar, open AI assistant).
+- Keyboard-friendly: arrow keys to move selection, Enter to run commands, Escape to close.
+
+### AI Assistant Panel (Preview)
+
+- Right-side slide-in panel (`src/components/ai/AiAssistantPanel.tsx`) wired to the TopBar button and command palette action.
+- Displays a stub conversation with an initial assistant message and echoes user prompts for now—ready to swap in real backend responses.
+- Closes via ESC or the close button; listens for future integrations with workspace insights.
+
 ### Authentication (Email + 6-digit Code, MVP)
 
 Screens:
 
-1. **Email Entry / Send Code**
+1. **Email Entry / Send Code** (`/auth/send-code`)
    - User enters email.
    - Client calls `POST /auth/send-code`.
    - On success: shows info that a code was sent and navigates to the verification screen.
    - On validation error: displays `ApiError.message`.
 
-2. **Verify Code**
+2. **Verify Code** (`/auth/verify-code`)
    - User enters the same email + 6-digit code.
    - Client calls `POST /auth/verify-code`.
    - On success:
@@ -58,7 +78,10 @@ Screens:
      - For invalid code → show a generic “code invalid” message.
      - For too many attempts → show a throttling message.
 
-This flow mirrors the backend behavior defined in `server-strategy` and Confluence (`5.1 – Authentication`).
+3. **Logged In View** (`/auth/logged-in`)
+   - Wrapped inside the AppShell; shows session context and sign-out action (resets auth state + routes back to `/auth/send-code`).
+
+This flow mirrors the backend behavior defined in `server-strategy` and Confluence (`5.1 – Authentication`) while following the shared shell experience.
 
 ---
 
@@ -115,21 +138,38 @@ Common scripts (from `package.json`):
 ```
 web-client-strategy/
   src/
-    api/
-      authClient.ts      # HTTP calls to /auth endpoints using common-strategy DTOs
     components/
-      AuthEmailForm.tsx  # Email input + send-code button
-      AuthCodeForm.tsx   # Email + code inputs + verify-code button
+      ai/AiAssistantPanel.tsx
+      command-palette/CommandPalette.tsx
+      layout/
+        AppShell.tsx
+        TopBar.tsx
+        Sidebar.tsx
+        InspectorPanel.tsx
+    features/
+      auth/
+        api/authClient.ts
+        components/
+          AuthEmailForm.tsx
+          AuthCodeForm.tsx
+        hooks/useAuth.ts
+        pages/
+          SendCodePage.tsx
+          VerifyCodePage.tsx
+          LoggedInPage.tsx
+        AuthSectionRoutes.tsx
     pages/
-      SendCodePage.tsx   # Screen for POST /auth/send-code
-      VerifyCodePage.tsx # Screen for POST /auth/verify-code
-      LoggedInPage.tsx   # Very simple “you are logged in” screen
-    hooks/
-      useAuth.ts         # (Optional) simple hook to hold auth state
-    App.tsx              # Routes between auth pages and logged-in page
+      DashboardPage.tsx
+      ActivityPage.tsx
+      ProfilePage.tsx
+      NotFoundPage.tsx
+    styles/globals.css
+    theme/tokens.ts
+    App.tsx              # AppRoutes with BrowserRouter + AppShell
     main.tsx             # React root
     __tests__/
       authFlow.test.tsx  # Tests for basic auth flow behavior
+      appShell.test.tsx  # Shell + command palette + AI panel tests
   vite.config.ts
   tsconfig.json
   README.md

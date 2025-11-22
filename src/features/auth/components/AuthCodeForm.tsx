@@ -40,25 +40,27 @@ export function AuthCodeForm({ onSuccess }: AuthCodeFormProps) {
     setLoading(true)
     setErrorMessage(null)
 
-    const result = await verifyCode({
-      email: normalizedEmail,
-      code: normalizedCode,
-    })
+    try {
+      const result = await verifyCode({
+        email: normalizedEmail,
+        code: normalizedCode,
+      })
 
-    setLoading(false)
+      if (result.ok) {
+        setCode('')
+        onSuccess(result.data)
+        return
+      }
 
-    if (result.ok) {
-      setCode('')
-      onSuccess(result.data)
-      return
+      setErrorMessage(getErrorMessage(result.error))
+    } finally {
+      setLoading(false)
     }
-
-    setErrorMessage(getErrorMessage(result.error))
   }
 
   return (
     <form
-      className="auth-form"
+      className="form"
       onSubmit={(event) => {
         void handleSubmit(event)
       }}
@@ -77,6 +79,7 @@ export function AuthCodeForm({ onSuccess }: AuthCodeFormProps) {
           onChange={(event) => setEmail(event.target.value)}
           disabled={loading}
           required
+          className="input"
         />
       </div>
 
@@ -94,6 +97,7 @@ export function AuthCodeForm({ onSuccess }: AuthCodeFormProps) {
           disabled={loading}
           maxLength={6}
           required
+          className="input"
         />
       </div>
 
@@ -103,7 +107,7 @@ export function AuthCodeForm({ onSuccess }: AuthCodeFormProps) {
         </p>
       ) : null}
 
-      <button type="submit" disabled={loading}>
+      <button type="submit" className="btn btn-primary" disabled={loading}>
         {loading ? 'Verifying...' : 'Verify code'}
       </button>
     </form>
