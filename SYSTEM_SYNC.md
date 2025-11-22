@@ -103,3 +103,22 @@ If this file and Confluence ever disagree, Confluence is the source of truth and
   - Implement UI and HTTP calls here.
   - Add or update tests before making deeper changes.
 
+## 7. UX Contract (E2E-XS v1 – Web Client)
+
+- Always render content inside a sticky top bar shell:
+  - app title / logo
+  - page title
+  - space for global search
+  - command palette trigger (Ctrl/⌘+K)
+  - user avatar (and later notifications).
+- On desktop, use a side navigation rail for primary sections (Dashboard, Activity, Profile, etc.), and collapse or hide it behind a hamburger on smaller screens.
+- New screens should follow the pattern:
+  - page title + brief description
+  - action bar (primary CTA, filters, search)
+  - main content area (cards, lists, tables).
+- Reuse shared primitives:
+  - cards, buttons, inputs, modals, toasts, skeletons, tabs.
+- Do not hard-code colors/spacing/typography; use the shared design tokens and CSS variables.
+- Leave hooks/placeholders for:
+  - command palette actions (navigation, quick actions)
+  - AI assistant side panel (chat-based helper).
