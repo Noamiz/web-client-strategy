@@ -41,6 +41,8 @@ export function AiAssistantPanel({ isOpen, onClose }: AiAssistantPanelProps) {
   }, [isOpen, onClose])
 
   useEffect(() => {
+    // TODO (accessibility): consider trapping focus within the AI panel when open or
+    // explicitly mark the experience as non-modal once we support background interaction.
     if (!isOpen) {
       return
     }
@@ -79,11 +81,18 @@ export function AiAssistantPanel({ isOpen, onClose }: AiAssistantPanelProps) {
   }
 
   return (
-    <aside className="ai-panel" role="complementary" aria-label="AI assistant panel">
+    <aside
+      className="ai-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ai-panel-title"
+    >
       <div className="ai-panel__header">
         <div>
           <p className="page-header__eyebrow">AI assistant</p>
-          <h2 className="page-header__title">Workspace helper</h2>
+          <h2 className="page-header__title" id="ai-panel-title">
+            Workspace helper
+          </h2>
         </div>
         <button type="button" className="btn btn-icon" aria-label="Close AI assistant" onClick={onClose}>
           <span aria-hidden="true">&times;</span>

@@ -41,7 +41,7 @@ In development, the Vite dev server proxies `/auth` calls to the `server-strateg
 ### E2E-XS v1 AppShell
 
 - Sticky TopBar with title slot, global search placeholder, command palette trigger (Ctrl/⌘+K helper), notification + AI buttons, and avatar stub.
-- Sidebar navigation (collapsible) for Dashboard, Activity, Auth demo, and Profile plus an Inspector panel stub on wide screens.
+- Sidebar navigation (collapsible) for Dashboard, Activity, Auth demo, and Profile plus an Inspector panel **stub** on wide screens.
 - Pages render within the shell via React Router nested routes (`src/components/layout/AppShell.tsx`).
 - Layout + primitives consume shared design tokens exposed as CSS variables, making it easy to extend themes later.
 
@@ -54,8 +54,8 @@ In development, the Vite dev server proxies `/auth` calls to the `server-strateg
 ### AI Assistant Panel (Preview)
 
 - Right-side slide-in panel (`src/components/ai/AiAssistantPanel.tsx`) wired to the TopBar button and command palette action.
-- Displays a stub conversation with an initial assistant message and echoes user prompts for now—ready to swap in real backend responses.
-- Closes via ESC or the close button; listens for future integrations with workspace insights.
+- Currently a **stub**: local message list + canned assistant responses so the surface exists while backend wiring is pending.
+- Declares dialog semantics and ESC-to-close; focus trapping + real AI integration are TODO items.
 
 ### Authentication (Email + 6-digit Code, MVP)
 
@@ -186,7 +186,7 @@ We follow the general testing approach from Confluence (6.1 – Testing Strategy
 
 For this repo use Vitest + React Testing Library for:
 
-- Component tests around the auth forms and screens.
+- Component tests around the auth forms, AppShell, command palette, and AI stub.
 - Basic flow tests (mocking fetch/HTTP).
 
 Initial goal: `src/__tests__/authFlow.test.tsx`:

@@ -33,6 +33,9 @@ export function CommandPalette({ onClose, commands }: CommandPaletteProps) {
     inputRef.current?.focus()
   }, [])
 
+  // TODO (accessibility): consider trapping focus inside the palette while open to prevent
+  // keyboard users from tabbing to the rest of the UI mid-command.
+
   const handleSelect = useCallback(
     (command: CommandPaletteCommand | undefined) => {
       if (!command) {

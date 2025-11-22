@@ -37,7 +37,7 @@ The **web dashboard** application for the system.
 - Implement the web UI for:
   - Authentication (email + 6-digit code).
   - Later: dashboards, metrics, admin views, etc.
-- Maintain the shared E2E Experience System (E2E-XS v1) shell: design tokens, sticky TopBar, Sidebar navigation, command palette (Ctrl/⌘+K), and AI assistant panel stub so new screens fit the same frame as `internal-tool-strategy`.
+- Maintain the shared E2E Experience System (E2E-XS v1) shell: design tokens, sticky TopBar, Sidebar navigation, command palette (Ctrl/⌘+K), and AI assistant panel **stub** so new screens fit the same frame as `internal-tool-strategy`.
 - Consume HTTP APIs from `server-strategy`.
 - Later: consume real-time data from `gateway-strategy`.
 - Use DTOs and error models from `common-strategy`.
@@ -111,16 +111,18 @@ If this file and Confluence ever disagree, Confluence is the source of truth and
   - page title
   - space for global search
   - command palette trigger (Ctrl/⌘+K)
-  - user avatar (and later notifications).
+  - user avatar + notifications placeholder.
 - On desktop, use a side navigation rail for primary sections (Dashboard, Activity, Profile, etc.), and collapse or hide it behind a hamburger on smaller screens.
 - New screens should follow the pattern:
   - page title + brief description
   - action bar (primary CTA, filters, search)
   - main content area (cards, lists, tables).
 - Reuse shared primitives:
-  - cards, buttons, inputs, modals, toasts, skeletons, tabs.
+  - cards, buttons, inputs, modals, toasts.
+  - Skeletons/tabs are FUTURE enhancements (not implemented in this repo yet).
 - Tokens + globals live in `src/theme/tokens.ts` and `src/styles/globals.css`. Layout primitives (TopBar, Sidebar, Inspector, AppShell) live under `src/components/layout/`. New features should wire into these shared building blocks rather than inventing new frames.
 - Do not hard-code colors/spacing/typography; use the shared design tokens and CSS variables.
 - Leave hooks/placeholders for:
   - command palette actions (navigation, quick actions)
-  - AI assistant side panel (chat-based helper).
+  - AI assistant side panel **stub** (chat-based helper – real backend TBD).
+  - Inspector panel currently shows placeholder copy only; real entity inspectors are planned.
