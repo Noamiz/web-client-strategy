@@ -1,5 +1,7 @@
 # web-client-strategy
 
+Part of the secondbase kit – a reusable, always-modern company-in-a-box.
+
 React + TypeScript **web client** for the _End to End Company Products_ system.
 
 This application is the main web dashboard for users and admins. It communicates with:
